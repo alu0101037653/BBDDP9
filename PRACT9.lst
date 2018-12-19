@@ -1,0 +1,338 @@
+alu0101037653@cc2328:~$ ssh alu0101047653@exthost2.etsii.ull.es
+The authenticity of host 'exthost2.etsii.ull.es (10.209.32.241)' can't be established.
+ECDSA key fingerprint is SHA256:d+0guc1W3UeQ7s/2YKyjqeGYNkfdyjTJENoDT4GQ2lY.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'exthost2.etsii.ull.es,10.209.32.241' (ECDSA) to the list of known hosts.
+alu0101047653@exthost2.etsii.ull.es's password: 
+Permission denied, please try again.
+alu0101047653@exthost2.etsii.ull.es's password: 
+Permission denied, please try again.
+alu0101047653@exthost2.etsii.ull.es's password: 
+
+alu0101037653@cc2328:~$ ssh alu0101037653@exthost2.etsii.ull.es
+alu0101037653@exthost2.etsii.ull.es's password: 
+Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-134-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Pueden actualizarse 387 paquetes.
+1 actualización es de seguridad.
+
+New release '18.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+*** Es necesario reiniciar el sistema ***
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+alu0101037653@c2:~$ sqlplus
+
+SQL*Plus: Release 12.2.0.1.0 Production on Wed Dec 19 13:08:15 2018
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Enter password: 
+Last Successful login time: Wed Dec 12 2018 13:11:42 +00:00
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+
+SQL> SET SERVEROUTPUT ON
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  3  END;
+  4  /
+HOLA MUNDO
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL PRACT9
+SQL> SAVE HOLAMUNDO
+Created file HOLAMUNDO.sql
+SQL> GET HOLAMUNDO
+  1  BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  3* END;
+SQL> RUN
+  1  BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  3* END;
+HOLA MUNDO
+
+PL/SQL procedure successfully completed.
+
+SQL> CREATE PROCEDURE HOLAMUNDO
+  2  IS 
+  3  BEGIN
+  4  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  5  END;
+  6  /
+
+Procedure created.
+
+SQL> SHOW ERRORS
+No errors.
+SQL> CALL HOLAMUNDO();
+HOLA MUNDO
+
+Call completed.
+
+SQL> DROP PROCEDURE HOLAMUNDO;
+
+Procedure dropped.
+
+SQL> CREATE FUNCTION DOBLE(X NUMBER) RETURN NUMBER
+  2  IS
+  3  BEGIN
+  4  RETURN 2*X;
+  5  END;
+  6  /
+
+Function created.
+
+SQL> BEGIN
+  2  DOBLE(4);
+  3  END;
+  4  /
+DOBLE(4);
+*
+ERROR at line 2:
+ORA-06550: line 2, column 1:
+PLS-00221: 'DOBLE' is not a procedure or is undefined
+ORA-06550: line 2, column 1:
+PL/SQL: Statement ignored
+
+
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE(TO_CHAR(DOBLE(4)));
+  3  END;
+  4  /
+8
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT DOBLE(4)
+  2  FROM DUAL;
+
+  DOBLE(4)
+----------
+	 8
+
+SQL> VARIABLE X NUMBER
+SQL> CALL DOBLE(4) INTO :X;
+
+Call completed.
+
+SQL> PRINT X
+
+	 X
+----------
+	 8
+
+SQL> DROP FUNCTION DOBLE;
+
+Function dropped.
+
+SQL> CREATE FUNCTION DOBLE(X NUMBER) RETURN NUMBER
+  2  IS
+  3  RESULTADO NUMBER
+  4  BEGIN
+
+SQL> CREATE FUNCTION DOBLE(X NUMBER) RETURN NUMBER
+  2  IS
+  3  RESULTADO NUMBER;
+  4  BEGIN
+  5  RESULTADO := 2*X;
+  6  RETURN RESULTADO;
+  7  END;
+  8  /
+
+Function created.
+
+SQL> SELECT DOBLE(4)
+  2  FROM DUAL;
+
+  DOBLE(4)
+----------
+	 8
+
+SQL> CREATE PROCEDURE TRIPLE(X IN NUMBER, Y OUT NUMBER)
+  2  IS
+  3  BEGIN
+  4  Y := 3*X;
+  5  END;
+  6  /
+
+Procedure created.
+
+SQL> SELECT TRIPLE(2,3)
+  2  FROM DUAL;
+SELECT TRIPLE(2,3)
+       *
+ERROR at line 1:
+ORA-00904: "TRIPLE": invalid identifier
+
+
+SQL> SELECT TRIPLE(2, 3)
+  2  FROM DUAL;
+SELECT TRIPLE(2, 3)
+       *
+ERROR at line 1:
+ORA-00904: "TRIPLE": invalid identifier
+
+
+SQL> VARIABLE X NUMBER
+SQL> CALL TRIPLE(2, 3) INTO :X;
+CALL TRIPLE(2, 3) INTO :X
+     *
+ERROR at line 1:
+ORA-06576: not a valid function or procedure name
+
+
+SQL> CALL TRIPLE(2) INTO :X;
+CALL TRIPLE(2) INTO :X
+     *
+ERROR at line 1:
+ORA-06576: not a valid function or procedure name
+
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  ;
+
+P
+------------------------------------------------------------
+LUIS
+JUAN
+CARLOS
+PEDRO
+MARIA
+IVAN
+CARMEN
+MARIO
+FRANCISCO
+ANGELA
+DAVID
+
+P
+------------------------------------------------------------
+SOLEDAD
+JOSE MANUEL
+CARMERLO
+CARINA
+
+15 rows selected.
+
+SQL> SELECT P, CAT
+  2  FROM PROFESOR
+  3  WHERE DNI = 1111;
+
+P							     CAT
+------------------------------------------------------------ -----
+JUAN							     CU
+
+SQL> DESCRIBE PROFESOR
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DNI					   NOT NULL NUMBER(8)
+ P						    VARCHAR2(60)
+ CAR						    NUMBER(3)
+ CAT						    VARCHAR2(5)
+
+SQL> DECLARE
+  2  v_p PROFESOR.P % TYPE;
+  3  v_cat PROFESOR.CAT % TYPE;
+  4  BEGIN
+  5  SELECT P, CAT
+  6  INTO v_p, v_cat
+  7  FROM PROFESOR
+  8  WHERE DNI = 1111;
+  9  DBMS_OUTPUT.PUT_LINE('Nombre: '| |v_p| |'Categoria: '| |v_cat);
+ 10  END;
+ 11  /
+DBMS_OUTPUT.PUT_LINE('Nombre: '| |v_p| |'Categoria: '| |v_cat);
+                               *
+ERROR at line 9:
+ORA-06550: line 9, column 32:
+PLS-00103: Encountered the symbol "|" when expecting one of the following:
+) , * & = - + < / > at in is mod remainder not rem =>
+<an exponent (**)> <> or != or ~= >= <= <> and or default
+like like2 like4 likec as between from using || multiset
+member submultiset
+
+
+SQL> DECLARE
+  2  v_p PROFESOR.P % TYPE;
+  3  v_cat PROFESOR.CAT % TYPE;
+  4  BEGIN
+  5  SELECT P, CAT
+  6  INTO v_p, v_cat
+  7  FROM PROFESOR
+  8  WHERE DNI = 1111;
+  9  DBMS_OUTPUT.PUT_LINE('Nombre: '||v_p||'Categoria: '||v_cat);
+ 10  END;
+ 11  /
+Nombre: JUANCategoria: CU
+
+PL/SQL procedure successfully completed.
+
+SQL> CREATE PROCEDURE DATOS(v_dni PROFESOR.DNI % TYPE, v_p OUT PROFESOR.P % TYPE, v_cat OUT PROFESOR.CAT)
+  2  IS
+  3  BEGIN
+  4  SELECT P, CAT
+  5  INTO v_p, v_cat
+  6  FROM PROFESOR
+  7  WHERE DNI = v_dni;
+  8  END;
+  9  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> SHOW ERRORS
+Errors for PROCEDURE DATOS:
+
+LINE/COL ERROR
+-------- -----------------------------------------------------------------
+0/0	 PL/SQL: Compilation unit analysis terminated
+1/81	 PLS-00488: 'PROFESOR.CAT' must be a type
+SQL> REPLACE PROCEDURE DATOS(v_dni PROFESOR.DNI % TYPE, v_p OUT PROFESOR.P % TYPE, v_cat OUT PROFESOR.CAT % TYPE)
+SP2-0734: unknown command beginning "REPLACE PR..." - rest of line ignored.
+SQL> ALTER PROCEDURE DATOS(v_dni PROFESOR.DNI % TYPE, v_p OUT PROFESOR.P % TYPE, v_cat OUT PROFESOR.CAT % TYPE)
+  2  IS
+  3  BEGIN
+  4  SELECT P, CAT
+  5  INTO v_p, v_cat
+  6  FROM PROFESOR
+  7  WHERE DNI = v_dni;
+ALTER PROCEDURE DATOS(v_dni PROFESOR.DNI % TYPE, v_p OUT PROFESOR.P % TYPE, v_cat OUT PROFESOR.CAT % TYPE)
+                     *
+ERROR at line 1:
+ORA-00922: missing or invalid option
+
+
+SQL> DROP PROCEDURE DATOS
+  2  ;
+
+Procedure dropped.
+
+SQL> CREATE PROCEDURE DATOS(v_dni PROFESOR.DNI % TYPE, v_p OUT PROFESOR.P % TYPE, v_cat OUT PROFESOR.CAT % TYPE)
+  2  IS
+  3  BEGIN
+  4  SELECT P, CAT
+  5  INTO v_p, v_cat
+  6  FROM PROFESOR
+  7  WHERE DNI = v_dni;
+  8  END;
+  9  /
+
+Procedure created.
+
+SQL> SPOOL OFF
+SQL> 
